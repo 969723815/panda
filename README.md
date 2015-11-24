@@ -3,7 +3,10 @@
 
 小熊猫是一款字体处理工具，支持osx32、osx64、win32、win64，简单任性。
 
-下载：http://pan.baidu.com/s/1pJOO2Kj
+##Install
+
+* <a href="http://vdisk.weibo.com/s/yVcSbNb-Ksypa">OS X</a>
+* <a href="http://vdisk.weibo.com/s/yVcSbNb-Ksypa">Windows</a>
 
 ##功能
 
