@@ -5,8 +5,8 @@
 
 ##Install
 
-* <a href="http://vdisk.weibo.com/s/yVcSbNb-Ksypa">OS X</a>
-* <a href="http://vdisk.weibo.com/s/yVcSbNb-Ksypa">Windows</a>
+* <a href="http://pan.baidu.com/s/1i5m5gEh">OS X</a>
+* <a href="http://pan.baidu.com/s/1qYIeVne">Windows</a>
 
 ##功能
 
