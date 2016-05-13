@@ -63,8 +63,8 @@ App.prototype = {
                         });
                         var file = files[i];
                         fontList.prepend('<li class="ui-font-item">\
-                            <div class="ui-font-del" data-id="' + unicodeNum + '">&#xe607;</div>\
-                            <div class="ui-font-pic"><img width="45" height="45" src="' + file.path + '" alt=""></div>\
+                            <div class="ui-font-operation"><span class="ui-font-del" title="删除当前图标">&#xe607;</span></div>\
+                            <div class="ui-font-pic"><img width="45" height="45" src="file://' + file.path + '" alt=""></div>\
                             <div class="ui-font-info">\
                                 <div class="ui-font-name"><span class="ui-font-name-file">' + file.name + '</span><span class="ui-font-name-unicode">&amp;#x' + unicodeNum + ';</span></div>\
                                 <div class="ui-font-size">' + (parseInt(file.size) / 1024).toFixed(2) + 'kb</div>\
@@ -81,7 +81,7 @@ App.prototype = {
                     self.isFirst = false;
                     //var importPath = file.path.replace(/[^/\\]+$/, "");
                     file.path.replace(/[^/\\]+$/, function(a) {
-                        fontArea.find(".ui-font-area-txt").html('解析文件：' + a + '<br>将一个或多个svg文件拖放至此开始追加');
+                        fontArea.find(".ui-font-area-txt").html('解析文件：' + a + '<br>将一个或多个svg文件拖放至此开始修改');
                     });
                     var glyphs = fontCarrier.transfer(file.path).allGlyph();
                     for (key in glyphs) {
@@ -95,7 +95,7 @@ App.prototype = {
                             continue;
                         }
                         fontList.prepend('<li class="ui-font-item">\
-                            <div class="ui-font-del">&#xe607;</div>\
+                            <div class="ui-font-operation"><span class="ui-font-replace" title="替换">&#xe604;<input class="ui-font-replace-input" type="file" accept=".svg"/></span><span class="ui-font-export" title="导出当前图标为svg格式">&#xe600;</span><span class="ui-font-del" title="删除当前图标">&#xe607;</span></div>\
                             <div class="ui-font-pic"><img width="45" height="45" src="data:image/svg+xml;base64,' + new Buffer(svg).toString('base64') + '" alt=""></div>\
                             <div class="ui-font-info">\
                                 <div class="ui-font-name"><span class="ui-font-name-unicode">&amp;' + key.slice(1) + '</span></div>\
@@ -127,8 +127,8 @@ App.prototype = {
                         });
                         var file = files[i];
                         fontList.prepend('<li class="ui-font-item">\
-                            <div class="ui-font-del" data-id="' + unicodeNum + '">&#xe607;</div>\
-                            <div class="ui-font-pic"><img width="45" height="45" src="' + file.path + '" alt=""></div>\
+                            <div class="ui-font-operation"><span class="ui-font-del" title="删除当前图标">&#xe607;</span></div>\
+                            <div class="ui-font-pic"><img width="45" height="45" src="file://' + file.path + '" alt=""></div>\
                             <div class="ui-font-info">\
                                 <div class="ui-font-name"><span class="ui-font-name-file">' + file.name + '</span><span class="ui-font-name-unicode">&amp;#x' + unicodeNum + ';</span></div>\
                                 <div class="ui-font-size">' + (parseInt(file.size) / 1024).toFixed(2) + 'kb</div>\
@@ -158,6 +158,14 @@ App.prototype = {
         //del
         this.bd.on("click", ".ui-font-del", function(e) {
             self._deleteFontView(this)
+        });
+        //export
+        this.bd.on("click", ".ui-font-export", function(e) {
+            self._exportIcon(this)
+        });
+        //replace
+        this.bd.on("change", ".ui-font-replace-input", function(e) {
+            self._replaceIcon(e,this)
         });
         var isAllowRender = true;
         this.bd.on("click", ".ui-font-command-render", function(e) {
@@ -223,26 +231,22 @@ App.prototype = {
         data.splice(data.length - 1 - $item.index(), 1);
         $item.remove();
     },
-    _renderFontView: function(file, unicode) {
-        if (this.status === "merge") {
-            this.bd.find(".ui-font-list").prepend('<li class="ui-font-item">\
-                <div class="ui-font-del" data-id="' + unicode + '">&#xe607;</div>\
-                <div class="ui-font-pic"><img width="45" height="45" src="' + file.path + '" alt=""></div>\
-                <div class="ui-font-info">\
-                    <div class="ui-font-name"><span class="ui-font-name-file">' + file.name + '</span><span class="ui-font-name-unicode">&amp;#x' + unicode + ';</span></div>\
-                    <div class="ui-font-size">' + (parseInt(file.size) / 1024).toFixed(2) + 'kb</div>\
-                </div>\
-            </li>');
-        } else if (this.status === "add") {
-            this.bd.find(".ui-font-list").prepend('<li class="ui-font-item">\
-                <div class="ui-font-del" data-id="' + unicode + '">&#xe607;</div>\
-                <div class="ui-font-pic"><img width="45" height="45" src="' + file.path + '" alt=""></div>\
-                <div class="ui-font-info">\
-                    <div class="ui-font-name"><span class="ui-font-name-file">' + file.name + '</span><span class="ui-font-name-unicode">&amp;#x' + unicode + ';</span></div>\
-                    <div class="ui-font-size">' + (parseInt(file.size) / 1024).toFixed(2) + 'kb</div>\
-                </div>\
-            </li>');
-        }
+    _exportIcon: function(el) {
+        var $item = $(el).closest(".ui-font-item");
+        var data = this.data[this.status];
+        data = data[data.length - 1 - $item.index()];
+        //data.splice(data.length - 1 - $item.index(), 1);
+        var exportPath = data.path.replace(/[^/\\]+$/, "")
+        fs.writeFileSync(exportPath + '/' + data.unicode.slice(2,7) + '.svg', data.glyph);
+    },
+    _replaceIcon: function(e,el) {
+        var $item = $(el).closest(".ui-font-item");
+        var path = "file:///"+$(el).val();
+        $item.find("img").attr("src", path)
+        var data = this.data[this.status];
+        data = data[data.length - 1 - $item.index()];
+        data.path = path
+        data.glyph = fs.readFileSync($(el).val()).toString()
     },
     _action: function(i) {
         localStorage.nav = i;
@@ -278,7 +282,7 @@ App.prototype = {
                 </div>' + commonHtml + '</div>',
             add: '<div class="ui-font">\
                 <div class="ui-font-area">\
-                    <span class="icon-yijieshou ui-font-area-txt">将一个待追加字体(.ttf)文件拖放至此<br/>如文件较大，需耐心等待</span>\
+                    <span class="icon-yijieshou ui-font-area-txt">将一个待修改字体(.ttf)文件拖放至此<br/>如文件较大，需耐心等待</span>\
                 </div>' + commonHtml + '</div>',
             cut: '<div class="ui-font">\
                     <div class="ui-font-area">\
