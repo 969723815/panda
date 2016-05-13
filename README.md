@@ -6,7 +6,7 @@
 ##Install
 
 * <a href="http://pan.baidu.com/s/1qYciPXE">OS X</a> v1.1
-* <a href="http://pan.baidu.com/s/1miCiOVe">Windows</a> v1.1
+* <a href="http://pan.baidu.com/s/1mhUP2Pi">Windows</a> v1.1
 
 ##功能
 
