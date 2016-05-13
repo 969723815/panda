@@ -17,7 +17,13 @@
 
 2.修改，可对字体追加、删除、替换、导出字形
 
+
+例如：从指定的字体文件中导出指定的图标
+
 ![2](https://cloud.githubusercontent.com/assets/1193966/15237920/3edb94a0-1905-11e6-992e-84fa3a7b91c4.gif)
+
+
+例如：替换字体中的指定字形
 
 ![3](https://cloud.githubusercontent.com/assets/1193966/15237923/3edf94ec-1905-11e6-91ac-e600ee16a771.gif)
 
