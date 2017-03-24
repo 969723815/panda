@@ -3,13 +3,13 @@
 
 小熊猫是一款字体处理工具，支持osx32、osx64、win32、win64，简单任性。
 
-##Install
+## Install
 
 * <a href="http://pan.baidu.com/s/1qYciPXE">OS X</a> v1.1
 * <a href="http://pan.baidu.com/s/1mhUP2Pi">Windows</a> v1.1
 * <a href="https://itunes.apple.com/cn/app/webfont/id1181350496?mt=12">App Store</a> 尊贵收费版
 
-##功能
+## 功能
 
 1.合并，可将svg文件批量拼合为字体文件
 
